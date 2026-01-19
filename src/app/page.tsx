@@ -1,79 +1,92 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { Badge, ButtonLink, Card } from "@/components/ui";
+
+export const metadata: Metadata = {
+  title: "Direito Civil — Nathalia Guaraciaba (OAB/RJ nº 25.832)",
+  description:
+    "Atuação em Direito Civil com postura técnica e comunicação objetiva. Atendimento em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo.",
+};
 
 export default function HomePage() {
   return (
     <div className="space-y-10">
-      <section className="rounded-3xl border border-zinc-200 bg-white p-10">
-        <div className="max-w-3xl space-y-4">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Direito Civil com postura técnica e comunicação objetiva.
-          </h1>
-
-          <p className="text-zinc-700 leading-relaxed">
-            Atuação com responsabilidade, análise do caso concreto e orientação clara sobre
-            possibilidades e próximos passos, sempre em conformidade com a legislação aplicável.
-          </p>
-
-          <div className="flex flex-wrap gap-3 pt-2">
-            <Link
-              href="/contato"
-              className="inline-flex rounded-2xl px-6 py-3 text-sm font-semibold text-white no-underline hover:opacity-95"
-              style={{ backgroundColor: "rgb(var(--accent))" }}
-            >
-              Solicitar contato
-            </Link>
-
-            <Link
-              href="/atuacao/direito-civil"
-              className="inline-flex rounded-2xl border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-900 no-underline hover:bg-zinc-50"
-            >
-              Ver atuação
-            </Link>
+      {/* HERO */}
+      <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="p-10">
+          <div className="flex flex-wrap gap-2">
+            <Badge>Direito Civil</Badge>
+            <Badge>Niterói</Badge>
+            <Badge>São Gonçalo</Badge>
+            <Badge>Rio de Janeiro/RJ</Badge>
           </div>
 
-          <p className="text-sm text-zinc-600">
-            Atendimento em Niterói, São Gonçalo e Rio de Janeiro/RJ.
+          <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+            Postura técnica, comunicação objetiva e atuação institucional.
+          </h1>
+
+          <p className="mt-3 max-w-3xl text-slate-700 leading-relaxed">
+            Orientação e atuação em demandas cíveis com análise do caso concreto, documentação e estratégia compatível com
+            a legislação aplicável, sempre com ética e responsabilidade.
           </p>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <ButtonLink href="/contato" variant="primary">
+              Solicitar contato
+            </ButtonLink>
+            <ButtonLink href="/atuacao/direito-civil" variant="outline">
+              Ver atuação
+            </ButtonLink>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs leading-relaxed text-slate-600">
+            Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada.
+            Não há promessa de resultado.
+          </div>
         </div>
+
+        {/* gatilho visual: faixa inferior */}
+        <div className="h-1 w-full" style={{ backgroundColor: "rgb(var(--accent))" }} />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-3xl border border-zinc-200 bg-white p-7">
-          <h2 className="text-sm font-semibold">Postura técnica</h2>
-          <p className="mt-2 text-sm text-zinc-700 leading-relaxed">
-            Análise documental e orientação fundamentada no caso concreto.
+      {/* TRIPÉ DE CREDIBILIDADE */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card title="Análise e estratégia">
+          <p className="text-sm text-slate-700 leading-relaxed">
+            Avaliação técnica do cenário, documentos e possibilidades jurídicas aplicáveis ao caso concreto.
           </p>
-        </div>
+        </Card>
 
-        <div className="rounded-3xl border border-zinc-200 bg-white p-7">
-          <h2 className="text-sm font-semibold">Comunicação clara</h2>
-          <p className="mt-2 text-sm text-zinc-700 leading-relaxed">
-            Explicações objetivas sobre etapas, riscos e alternativas possíveis.
+        <Card title="Clareza na comunicação">
+          <p className="text-sm text-slate-700 leading-relaxed">
+            Explicações objetivas sobre etapas, riscos e alternativas, com alinhamento de expectativas.
           </p>
-        </div>
+        </Card>
 
-        <div className="rounded-3xl border border-zinc-200 bg-white p-7">
-          <h2 className="text-sm font-semibold">Ética e responsabilidade</h2>
-          <p className="mt-2 text-sm text-zinc-700 leading-relaxed">
-            Atuação institucional, sem promessas de resultado.
+        <Card title="Ética e responsabilidade">
+          <p className="text-sm text-slate-700 leading-relaxed">
+            Atuação institucional, com discrição e respeito às normas aplicáveis à advocacia.
           </p>
-        </div>
-      </section>
+        </Card>
+      </div>
 
-      <section className="rounded-3xl border border-zinc-200 bg-white p-10">
-        <div className="max-w-3xl space-y-3">
-          <h2 className="text-xl font-semibold tracking-tight">Conteúdos informativos</h2>
-          <p className="text-sm text-zinc-700 leading-relaxed">
-            Artigos com caráter informativo sobre temas do Direito Civil, voltados ao público em geral.
-          </p>
-          <Link
-            href="/blog"
-            className="inline-flex rounded-2xl border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-900 no-underline hover:bg-zinc-50"
-          >
-            Acessar o blog
-          </Link>
-        </div>
-      </section>
+      {/* CHAMADA EDITORIAL */}
+      <Card
+        title="Conteúdos informativos"
+        footer={
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-xs text-slate-600">
+              Artigos com caráter informativo sobre Direito Civil.
+            </p>
+            <ButtonLink href="/blog" variant="outline">
+              Acessar o blog
+            </ButtonLink>
+          </div>
+        }
+      >
+        <p className="text-sm text-slate-700 leading-relaxed">
+          Uma seção editorial para educação e informação do público, com linguagem clara e sem apelos comerciais.
+        </p>
+      </Card>
     </div>
   );
 }

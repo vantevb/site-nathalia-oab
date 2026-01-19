@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} min-h-dvh bg-zinc-50 text-zinc-950 antialiased`}>
+      <body className={` min-h-dvh bg-slate-50 text-slate-900 antialiased`}>
         <Header />
         <main className="mx-auto w-full max-w-6xl px-4 py-10">{children}</main>
         <Footer />
