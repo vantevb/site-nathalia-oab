@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Identidade visual: sóbria e institucional */
+:root {
+  --surface: 250 250 250;   /* zinc-50 */
+  --text: 9 9 11;           /* zinc-950 */
+  --muted: 113 113 122;     /* zinc-500 */
+  --border: 228 228 231;    /* zinc-200 */
+  --accent: 15 76 92;       /* azul petróleo */
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: rgb(var(--surface));
+  color: rgb(var(--text));
+}
+
+/* Links: remove azul/roxo padrão do navegador */
+a {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
