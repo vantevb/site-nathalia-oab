@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPostSlugs } from "@/lib/posts";
+import { getAllPostSlugs, getPostLastModified } from "@/lib/posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://nathaliaguaraciaba.adv.br";
@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const posts = getAllPostSlugs().map((slug) => ({
     url: `${baseUrl}/blog/${slug}`,
-    lastModified: new Date(),
+    lastModified: getPostLastModified(slug),
   }));
 
   return [...staticRoutes, ...posts];
