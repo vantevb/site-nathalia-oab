@@ -2,31 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Identidade visual: sóbria e institucional */
-:root {
-  --surface: 250 250 250;   /* zinc-50 */
-  --text: 9 9 11;           /* zinc-950 */
-  --muted: 113 113 122;     /* zinc-500 */
-  --border: 228 228 231;    /* zinc-200 */
-  --accent: 15 76 92;       /* azul petróleo */
+/* Tema: corporativo / jurídico (força + credibilidade) */
+:root{
+  --bg: 8 13 18;           /* quase preto (navy/charcoal) */
+  --surface: 15 23 42;     /* slate-900 */
+  --panel: 17 24 39;       /* slate-900/950 mix */
+  --text: 241 245 249;     /* slate-100 */
+  --muted: 148 163 184;    /* slate-400 */
+  --border: 51 65 85;      /* slate-700 */
+
+  --accent: 15 76 92;      /* azul petróleo */
+  --accent-2: 217 119 6;   /* dourado discreto (amber-600) */
 }
 
-html, body {
-  height: 100%;
-}
+html, body { height: 100%; }
+body { background: rgb(var(--bg)); color: rgb(var(--text)); }
 
-body {
-  background: rgb(var(--surface));
-  color: rgb(var(--text));
-}
-
-/* Links: remove azul/roxo padrão do navegador */
-a {
-  color: inherit;
-  text-decoration: none;
-  text-underline-offset: 3px;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+a { color: inherit; text-decoration: none; text-underline-offset: 3px; }
+a:hover { text-decoration: underline; }

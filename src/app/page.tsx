@@ -1,92 +1,171 @@
 import type { Metadata } from "next";
-import { Badge, ButtonLink, Card } from "@/components/ui";
+import { Badge, ButtonLink, Card, Container, SectionTitle } from "@/components/ui";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Direito Civil — Nathalia Guaraciaba (OAB/RJ nº 25.832)",
+  title: "Nathalia Guaraciaba — OAB/RJ nº 25.832",
   description:
-    "Atuação em Direito Civil com postura técnica e comunicação objetiva. Atendimento em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo.",
+    "Atuação em Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo e atendimento com ética e responsabilidade.",
 };
 
 export default function HomePage() {
   return (
-    <div className="space-y-10">
+    <>
       {/* HERO */}
-      <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div className="p-10">
-          <div className="flex flex-wrap gap-2">
-            <Badge>Direito Civil</Badge>
-            <Badge>Niterói</Badge>
-            <Badge>São Gonçalo</Badge>
-            <Badge>Rio de Janeiro/RJ</Badge>
+      <div className="border-b border-slate-700/50">
+        <Container>
+          <div className="grid gap-10 py-14 md:grid-cols-2 md:items-start">
+            <div className="space-y-6">
+              <div className="flex flex-wrap gap-2">
+                <Badge>Direito Civil</Badge>
+                <Badge>Niterói</Badge>
+                <Badge>São Gonçalo</Badge>
+                <Badge>Rio de Janeiro/RJ</Badge>
+              </div>
+
+              <h1 className="text-4xl font-semibold tracking-tight text-slate-50 md:text-5xl">
+                Soluções jurídicas com postura institucional.
+              </h1>
+
+              <p className="max-w-xl text-base leading-relaxed text-slate-300">
+                Orientação e atuação em demandas cíveis com análise do caso concreto, clareza na comunicação e
+                respeito às normas aplicáveis à advocacia.
+              </p>
+
+              <div className="flex flex-wrap gap-3">
+                <ButtonLink href="/contato" variant="primary">
+                  Solicitar contato
+                </ButtonLink>
+                <ButtonLink href="/atuacao/direito-civil" variant="outline">
+                  Ver atuação
+                </ButtonLink>
+                <Link href="/blog" className="text-sm font-semibold text-slate-200 hover:underline self-center">
+                  Conteúdos informativos →
+                </Link>
+              </div>
+
+              <div className="rounded-2xl border border-slate-700/70 bg-slate-900/30 p-4 text-xs leading-relaxed text-slate-300">
+                Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise
+                individualizada. Não há promessa de resultado.
+              </div>
+            </div>
+
+            {/* FORM (estilo "Schedule a Consultation") */}
+            <Card>
+              <div className="space-y-4">
+                <div>
+                  <div className="text-xs font-semibold tracking-[0.22em] uppercase text-slate-400">
+                    Atendimento
+                  </div>
+                  <div className="mt-2 text-lg font-semibold text-slate-50">
+                    Solicitar contato
+                  </div>
+                  <p className="mt-1 text-sm text-slate-300">
+                    Envie uma mensagem e retorno será realizado conforme disponibilidade.
+                  </p>
+                </div>
+
+                <form action="/contato" className="space-y-3">
+                  <input
+                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
+                    placeholder="Nome"
+                    name="nome"
+                  />
+                  <input
+                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
+                    placeholder="E-mail"
+                    name="email"
+                    type="email"
+                  />
+                  <input
+                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
+                    placeholder="Telefone (opcional)"
+                    name="telefone"
+                  />
+                  <textarea
+                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
+                    placeholder="Mensagem (resumo do assunto e cidade)"
+                    name="mensagem"
+                    rows={4}
+                  />
+
+                  <button
+                    className="w-full rounded-2xl px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+                    style={{ backgroundColor: "rgb(var(--accent))" }}
+                    type="submit"
+                  >
+                    Ir para o formulário completo
+                  </button>
+
+                  <div className="text-xs leading-relaxed text-slate-400">
+                    Sem promessa de resultado. Atendimento institucional.
+                  </div>
+                </form>
+              </div>
+            </Card>
           </div>
-
-          <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-            Postura técnica, comunicação objetiva e atuação institucional.
-          </h1>
-
-          <p className="mt-3 max-w-3xl text-slate-700 leading-relaxed">
-            Orientação e atuação em demandas cíveis com análise do caso concreto, documentação e estratégia compatível com
-            a legislação aplicável, sempre com ética e responsabilidade.
-          </p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <ButtonLink href="/contato" variant="primary">
-              Solicitar contato
-            </ButtonLink>
-            <ButtonLink href="/atuacao/direito-civil" variant="outline">
-              Ver atuação
-            </ButtonLink>
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs leading-relaxed text-slate-600">
-            Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada.
-            Não há promessa de resultado.
-          </div>
-        </div>
-
-        {/* gatilho visual: faixa inferior */}
-        <div className="h-1 w-full" style={{ backgroundColor: "rgb(var(--accent))" }} />
-      </section>
-
-      {/* TRIPÉ DE CREDIBILIDADE */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card title="Análise e estratégia">
-          <p className="text-sm text-slate-700 leading-relaxed">
-            Avaliação técnica do cenário, documentos e possibilidades jurídicas aplicáveis ao caso concreto.
-          </p>
-        </Card>
-
-        <Card title="Clareza na comunicação">
-          <p className="text-sm text-slate-700 leading-relaxed">
-            Explicações objetivas sobre etapas, riscos e alternativas, com alinhamento de expectativas.
-          </p>
-        </Card>
-
-        <Card title="Ética e responsabilidade">
-          <p className="text-sm text-slate-700 leading-relaxed">
-            Atuação institucional, com discrição e respeito às normas aplicáveis à advocacia.
-          </p>
-        </Card>
+        </Container>
       </div>
 
-      {/* CHAMADA EDITORIAL */}
-      <Card
-        title="Conteúdos informativos"
-        footer={
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-xs text-slate-600">
-              Artigos com caráter informativo sobre Direito Civil.
-            </p>
-            <ButtonLink href="/blog" variant="outline">
-              Acessar o blog
+      {/* PRACTICE AREAS (grid) */}
+      <Container>
+        <div className="py-14 space-y-8">
+          <SectionTitle
+            kicker="Atuação"
+            title="Áreas de atuação"
+            subtitle="Seleção de temas em Direito Civil. A atuação depende de análise do caso concreto."
+          />
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <h3 className="text-base font-semibold text-slate-50">Contratos</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                Análise, revisão e orientação contratual com foco em clareza, riscos e documentação.
+              </p>
+            </Card>
+
+            <Card>
+              <h3 className="text-base font-semibold text-slate-50">Responsabilidade civil</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                Avaliação de danos, nexo causal e documentação para definição de estratégia adequada.
+              </p>
+            </Card>
+
+            <Card>
+              <h3 className="text-base font-semibold text-slate-50">Cobranças e obrigações</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                Orientação sobre medidas possíveis, provas e condução de tratativas.
+              </p>
+            </Card>
+          </div>
+
+          <div>
+            <ButtonLink href="/atuacao/direito-civil" variant="outline">
+              Ver detalhes de Direito Civil
             </ButtonLink>
           </div>
-        }
-      >
-        <p className="text-sm text-slate-700 leading-relaxed">
-          Uma seção editorial para educação e informação do público, com linguagem clara e sem apelos comerciais.
-        </p>
-      </Card>
-    </div>
+        </div>
+      </Container>
+
+      {/* TRUST BAR (gatilhos visuais de credibilidade) */}
+      <div className="border-t border-slate-700/50 bg-slate-950/20">
+        <Container>
+          <div className="py-10">
+            <SectionTitle
+              kicker="Credibilidade"
+              title="Postura institucional e informação qualificada"
+              subtitle="Sinais visuais discretos de confiança, sem linguagem promocional."
+            />
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <Badge>OAB/RJ nº 25.832</Badge>
+              <Badge>Atendimento regional</Badge>
+              <Badge>Conteúdo informativo</Badge>
+              <Badge>Ética e responsabilidade</Badge>
+            </div>
+          </div>
+        </Container>
+      </div>
+    </>
   );
 }
