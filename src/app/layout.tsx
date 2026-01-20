@@ -3,7 +3,6 @@ import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import WhatsAppFloating from "../components/WhatsAppFloating";
-import WhatsAppFloating from "../components/WhatsAppFloating";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,11 +16,11 @@ export const metadata: Metadata = {
     template: "%s — Nathalia Guaraciaba",
   },
   description:
-    "Atuação em Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo e atendimento com ética e responsabilidade.",
+    "Atuação em Direito Civil no Estado do Rio de Janeiro/RJ. Conteúdo informativo e atendimento com ética e responsabilidade.",
   openGraph: {
     title: "Nathalia dos Santos Guaraciaba — OAB/RJ nº 25.832",
     description:
-      "Atuação em Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo, sem promessa de resultado.",
+      "Atuação em Direito Civil no Estado do Rio de Janeiro/RJ. Conteúdo informativo, sem promessa de resultado.",
     url: siteUrl,
     siteName: "Nathalia Guaraciaba — Advocacia",
     locale: "pt_BR",
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nathalia dos Santos Guaraciaba — OAB/RJ nº 25.832",
     description:
-      "Direito Civil • Niterói • São Gonçalo • Rio de Janeiro/RJ • Conteúdo informativo.",
+      "Direito Civil • Rio de Janeiro/RJ • Conteúdo informativo.",
   },
 };
 
