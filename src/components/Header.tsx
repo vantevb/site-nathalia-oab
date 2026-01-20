@@ -10,7 +10,7 @@ export default function Header() {
         <Logo />
 
         <nav className="hidden items-center gap-7 text-sm font-semibold md:flex" style={{ color: "rgb(var(--muted))" }}>
-          <Link href="/atuacao/direito-civil" className="hover:underline">Atuação</Link>
+          <Link href="/atuacao" className="hover:underline">Atuação</Link>
           <Link href="/sobre" className="hover:underline">Sobre</Link>
           <Link href="/blog" className="hover:underline">Conteúdos</Link>
           <Link href="/contato" className="hover:underline">Contato</Link>

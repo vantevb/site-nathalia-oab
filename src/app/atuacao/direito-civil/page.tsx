@@ -1,45 +1,78 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Direito Civil",
+  description:
+    "Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo e atendimento institucional.",
+};
+
+function Block({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-3xl border bg-white shadow-sm" style={{ borderColor: "rgb(var(--border))" }}>
+      <div className="p-8">
+        <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+          Tema
+        </div>
+        <h2 className="mt-2 text-lg font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+          {title}
+        </h2>
+        <div className="mt-3 text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+          {children}
+        </div>
+      </div>
+      <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
+    </section>
+  );
+}
 
 export default function DireitoCivilPage() {
   return (
-    <div className="max-w-3xl space-y-10">
+    <main className="mx-auto w-full max-w-6xl px-4 py-12 space-y-10">
       <header className="space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight">Direito Civil</h1>
-        <p className="text-zinc-700 leading-relaxed">
-          Atuação em demandas e orientações de natureza cível, com análise do caso concreto,
-          avaliação de documentos e definição de estratégia compatível com a legislação aplicável.
+        <Link href="/atuacao" className="text-sm font-semibold hover:underline" style={{ color: "rgb(var(--accent))" }}>
+          ← Voltar para Atuação
+        </Link>
+
+        <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+          Atuação
+        </div>
+
+        <h1 className="text-3xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+          Direito Civil
+        </h1>
+
+        <p className="max-w-3xl text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+          Orientação e atuação em demandas cíveis com análise do caso concreto, documentação e comunicação objetiva.
         </p>
+
+        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
       </header>
 
-      <section className="rounded-3xl border border-zinc-200 bg-white p-8">
-        <h2 className="text-lg font-semibold">Atuações comuns</h2>
-        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-zinc-700">
-          <li>Contratos (análise, revisão e elaboração)</li>
-          <li>Responsabilidade civil (danos materiais e morais)</li>
-          <li>Cobranças e inadimplemento</li>
-          <li>Notificações extrajudiciais</li>
-        </ul>
+      <section className="grid gap-4 md:grid-cols-2">
+        <Block title="Contratos">
+          Análise e revisão de cláusulas, identificação de riscos e orientação sobre documentação e alternativas aplicáveis.
+        </Block>
+
+        <Block title="Responsabilidade civil">
+          Avaliação técnica do cenário, provas disponíveis e possíveis caminhos jurídicos, conforme o caso concreto.
+        </Block>
+
+        <Block title="Obrigações e cobranças">
+          Orientação sobre medidas possíveis, documentação, tentativas de composição e condução adequada do tema.
+        </Block>
+
+        <Block title="Atendimento e orientação">
+          O atendimento é realizado de forma institucional. Cada caso exige análise individualizada e não há promessa de resultado.
+        </Block>
       </section>
 
-      <section className="rounded-3xl border border-zinc-200 bg-white p-8">
-        <h2 className="text-lg font-semibold">Como funciona</h2>
-        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-zinc-700">
-          <li>Entendimento do cenário e coleta de documentos</li>
-          <li>Orientação jurídica e próximos passos possíveis</li>
-          <li>Definição de estratégia conforme lei e prova disponível</li>
-          <li>Acompanhamento com comunicação objetiva</li>
-        </ol>
-
-        <div className="mt-6">
-          <Link
-            href="/contato"
-            className="inline-flex rounded-2xl px-6 py-3 text-sm font-semibold text-white no-underline hover:opacity-95"
-            style={{ backgroundColor: "rgb(var(--accent))" }}
-          >
-            Solicitar contato
-          </Link>
-        </div>
-      </section>
-    </div>
+      <footer
+        className="rounded-3xl border bg-white p-6 text-xs leading-relaxed"
+        style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--muted))" }}
+      >
+        Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada. Não há promessa de resultado.
+      </footer>
+    </main>
   );
 }
