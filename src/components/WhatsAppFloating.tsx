@@ -18,9 +18,12 @@ export default function WhatsAppFloating() {
   if (!hasWhatsApp) return null;
 
   const text = [
-    "Olá, Dra. Nathalia. Gostaria de solicitar contato.",
+    "Olá, Dra. Nathalia.",
     "",
-    "Enviado pelo site (conteúdo informativo; sem promessa de resultado).",
+    "Acessei o site institucional e gostaria de solicitar contato para informações iniciais.",
+    "",
+    "—",
+    "Conteúdo de caráter informativo. Não há promessa de resultado.",
   ].join("\n");
 
   const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
