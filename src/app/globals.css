@@ -2,21 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tema: corporativo / jurídico (força + credibilidade) */
-:root{
-  --bg: 8 13 18;           /* quase preto (navy/charcoal) */
-  --surface: 15 23 42;     /* slate-900 */
-  --panel: 17 24 39;       /* slate-900/950 mix */
-  --text: 241 245 249;     /* slate-100 */
-  --muted: 148 163 184;    /* slate-400 */
-  --border: 51 65 85;      /* slate-700 */
+/* Editorial premium: papel + carvão + acento discreto */
+:root {
+  --bg: 250 250 249;        /* stone-50 */
+  --surface: 255 255 255;   /* white */
+  --text: 17 24 39;         /* slate-900 */
+  --muted: 71 85 105;       /* slate-600 */
+  --border: 226 232 240;    /* slate-200 */
 
-  --accent: 15 76 92;      /* azul petróleo */
-  --accent-2: 217 119 6;   /* dourado discreto (amber-600) */
+  --accent: 15 76 92;       /* petróleo discreto */
+  --accent-2: 12 45 56;     /* mais escuro */
 }
 
 html, body { height: 100%; }
-body { background: rgb(var(--bg)); color: rgb(var(--text)); }
 
-a { color: inherit; text-decoration: none; text-underline-offset: 3px; }
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
 a:hover { text-decoration: underline; }
+
+::selection { background: rgba(15,76,92,.14); }

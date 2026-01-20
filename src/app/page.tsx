@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Badge, ButtonLink, Card, Container, SectionTitle } from "@/components/ui";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -8,164 +7,114 @@ export const metadata: Metadata = {
     "Atuação em Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo e atendimento com ética e responsabilidade.",
 };
 
+function Card({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-3xl border bg-white shadow-sm"
+      style={{ borderColor: "rgb(var(--border))" }}
+    >
+      <div className="p-8">
+        <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+          {title}
+        </div>
+        <div className="mt-3 text-sm leading-relaxed" style={{ color: "rgb(var(--text))" }}>
+          {children}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   return (
-    <>
-      {/* HERO */}
-      <div className="border-b border-slate-700/50">
-        <Container>
-          <div className="grid gap-10 py-14 md:grid-cols-2 md:items-start">
-            <div className="space-y-6">
-              <div className="flex flex-wrap gap-2">
-                <Badge>Direito Civil</Badge>
-                <Badge>Niterói</Badge>
-                <Badge>São Gonçalo</Badge>
-                <Badge>Rio de Janeiro/RJ</Badge>
-              </div>
-
-              <h1 className="text-4xl font-semibold tracking-tight text-slate-50 md:text-5xl">
-                Soluções jurídicas com postura institucional.
-              </h1>
-
-              <p className="max-w-xl text-base leading-relaxed text-slate-300">
-                Orientação e atuação em demandas cíveis com análise do caso concreto, clareza na comunicação e
-                respeito às normas aplicáveis à advocacia.
-              </p>
-
-              <div className="flex flex-wrap gap-3">
-                <ButtonLink href="/contato" variant="primary">
-                  Solicitar contato
-                </ButtonLink>
-                <ButtonLink href="/atuacao/direito-civil" variant="outline">
-                  Ver atuação
-                </ButtonLink>
-                <Link href="/blog" className="text-sm font-semibold text-slate-200 hover:underline self-center">
-                  Conteúdos informativos →
-                </Link>
-              </div>
-
-              <div className="rounded-2xl border border-slate-700/70 bg-slate-900/30 p-4 text-xs leading-relaxed text-slate-300">
-                Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise
-                individualizada. Não há promessa de resultado.
-              </div>
-            </div>
-
-            {/* FORM (estilo "Schedule a Consultation") */}
-            <Card>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-xs font-semibold tracking-[0.22em] uppercase text-slate-400">
-                    Atendimento
-                  </div>
-                  <div className="mt-2 text-lg font-semibold text-slate-50">
-                    Solicitar contato
-                  </div>
-                  <p className="mt-1 text-sm text-slate-300">
-                    Envie uma mensagem e retorno será realizado conforme disponibilidade.
-                  </p>
-                </div>
-
-                <form action="/contato" className="space-y-3">
-                  <input
-                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
-                    placeholder="Nome"
-                    name="nome"
-                  />
-                  <input
-                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
-                    placeholder="E-mail"
-                    name="email"
-                    type="email"
-                  />
-                  <input
-                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
-                    placeholder="Telefone (opcional)"
-                    name="telefone"
-                  />
-                  <textarea
-                    className="w-full rounded-2xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-slate-400/20"
-                    placeholder="Mensagem (resumo do assunto e cidade)"
-                    name="mensagem"
-                    rows={4}
-                  />
-
-                  <button
-                    className="w-full rounded-2xl px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
-                    style={{ backgroundColor: "rgb(var(--accent))" }}
-                    type="submit"
-                  >
-                    Ir para o formulário completo
-                  </button>
-
-                  <div className="text-xs leading-relaxed text-slate-400">
-                    Sem promessa de resultado. Atendimento institucional.
-                  </div>
-                </form>
-              </div>
-            </Card>
-          </div>
-        </Container>
-      </div>
-
-      {/* PRACTICE AREAS (grid) */}
-      <Container>
-        <div className="py-14 space-y-8">
-          <SectionTitle
-            kicker="Atuação"
-            title="Áreas de atuação"
-            subtitle="Seleção de temas em Direito Civil. A atuação depende de análise do caso concreto."
-          />
-
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <h3 className="text-base font-semibold text-slate-50">Contratos</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                Análise, revisão e orientação contratual com foco em clareza, riscos e documentação.
-              </p>
-            </Card>
-
-            <Card>
-              <h3 className="text-base font-semibold text-slate-50">Responsabilidade civil</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                Avaliação de danos, nexo causal e documentação para definição de estratégia adequada.
-              </p>
-            </Card>
-
-            <Card>
-              <h3 className="text-base font-semibold text-slate-50">Cobranças e obrigações</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                Orientação sobre medidas possíveis, provas e condução de tratativas.
-              </p>
-            </Card>
+    <main className="mx-auto w-full max-w-6xl px-4 py-12 space-y-10">
+      {/* hero editorial */}
+      <section className="rounded-3xl border bg-white shadow-sm overflow-hidden"
+        style={{ borderColor: "rgb(var(--border))" }}
+      >
+        <div className="p-10 md:p-12">
+          <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+            Direito Civil • Niterói • São Gonçalo • Rio de Janeiro/RJ
           </div>
 
-          <div>
-            <ButtonLink href="/atuacao/direito-civil" variant="outline">
-              Ver detalhes de Direito Civil
-            </ButtonLink>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+            Clareza, firmeza técnica e postura institucional.
+          </h1>
+
+          <p className="mt-4 max-w-3xl text-base leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+            Orientação e atuação em demandas cíveis com análise do caso concreto, organização documental e comunicação objetiva.
+          </p>
+
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Link
+              href="/contato"
+              className="rounded-2xl px-6 py-3 text-sm font-semibold text-white no-underline hover:opacity-95 transition"
+              style={{ backgroundColor: "rgb(var(--accent))" }}
+            >
+              Solicitar contato
+            </Link>
+            <Link
+              href="/blog"
+              className="rounded-2xl border px-6 py-3 text-sm font-semibold no-underline hover:bg-slate-50 transition"
+              style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--text))" }}
+            >
+              Ler conteúdos
+            </Link>
+            <Link href="/atuacao/direito-civil" className="text-sm font-semibold hover:underline" style={{ color: "rgb(var(--muted))" }}>
+              Ver atuação →
+            </Link>
+          </div>
+
+          <div className="mt-7 rounded-2xl border bg-slate-50 p-4 text-xs leading-relaxed"
+            style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--muted))" }}
+          >
+            Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada.
+            Não há promessa de resultado.
           </div>
         </div>
-      </Container>
 
-      {/* TRUST BAR (gatilhos visuais de credibilidade) */}
-      <div className="border-t border-slate-700/50 bg-slate-950/20">
-        <Container>
-          <div className="py-10">
-            <SectionTitle
-              kicker="Credibilidade"
-              title="Postura institucional e informação qualificada"
-              subtitle="Sinais visuais discretos de confiança, sem linguagem promocional."
-            />
+        {/* linha editorial inferior */}
+        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.22)" }} />
+      </section>
 
-            <div className="mt-6 flex flex-wrap gap-2">
-              <Badge>OAB/RJ nº 25.832</Badge>
-              <Badge>Atendimento regional</Badge>
-              <Badge>Conteúdo informativo</Badge>
-              <Badge>Ética e responsabilidade</Badge>
-            </div>
-          </div>
-        </Container>
+      {/* tripé */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card title="Método">
+          Avaliação do cenário, documentos e possibilidades jurídicas aplicáveis ao caso concreto.
+        </Card>
+        <Card title="Comunicação">
+          Explicações diretas sobre etapas, riscos e alternativas, com alinhamento de expectativas.
+        </Card>
+        <Card title="Conduta">
+          Atuação com discrição, ética e responsabilidade, respeitando as normas aplicáveis à advocacia.
+        </Card>
       </div>
-    </>
+
+      {/* chamada editorial */}
+      <section className="rounded-3xl border bg-white shadow-sm"
+        style={{ borderColor: "rgb(var(--border))" }}
+      >
+        <div className="p-8 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+              Editorial
+            </div>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+              Conteúdos informativos
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+              Artigos objetivos sobre temas do Direito Civil — sem apelos comerciais.
+            </p>
+          </div>
+
+          <Link
+            href="/blog"
+            className="rounded-2xl border px-6 py-3 text-sm font-semibold no-underline hover:bg-slate-50 transition"
+            style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--text))" }}
+          >
+            Acessar blog
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }
