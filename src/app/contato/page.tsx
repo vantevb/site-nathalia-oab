@@ -1,33 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+
+type Status = "idle" | "loading" | "success" | "error";
 
 export default function ContatoPage() {
-  const startedAt = useMemo(() => Date.now(), []);
-  const [loading, setLoading] = useState(false);
-  const [okMsg, setOkMsg] = useState<string | null>(null);
-  const [errMsg, setErrMsg] = useState<string | null>(null);
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setOkMsg(null);
-    setErrMsg(null);
-    setLoading(true);
+    setStatus("loading");
+    setError("");
 
     const form = new FormData(e.currentTarget);
-
-    const payload = {
-      nome: String(form.get("nome") || ""),
-      email: String(form.get("email") || ""),
-      telefone: String(form.get("telefone") || ""),
-      cidade: String(form.get("cidade") || ""),
-      assunto: String(form.get("assunto") || ""),
-      mensagem: String(form.get("mensagem") || ""),
-
-      // anti-spam
-      website: String(form.get("website") || ""),
-      startedAt,
-    };
+    const payload = Object.fromEntries(form.entries());
 
     try {
       const res = await fetch("/api/contato", {
@@ -36,133 +23,132 @@ export default function ContatoPage() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok || !data?.ok) {
-        setErrMsg(data?.error || "Não foi possível enviar. Tente novamente.");
-        return;
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data?.error || "Não foi possível enviar.");
       }
 
-      (e.currentTarget as HTMLFormElement).reset();
-      setOkMsg("Mensagem enviada. Em breve você receberá um retorno, conforme disponibilidade.");
-    } catch {
-      setErrMsg("Falha de conexão. Verifique sua internet e tente novamente.");
-    } finally {
-      setLoading(false);
+      setStatus("success");
+      (e.target as HTMLFormElement).reset();
+    } catch (err: any) {
+      setStatus("error");
+      setError(err?.message || "Erro ao enviar.");
     }
   }
 
   return (
-    <div className="max-w-3xl space-y-10">
+    <main className="mx-auto w-full max-w-6xl px-4 py-12 space-y-10">
       <header className="space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight">Contato</h1>
-        <p className="text-zinc-700 leading-relaxed">
-          Envie uma mensagem com um resumo do assunto e sua cidade. O retorno é realizado conforme
-          disponibilidade e ordem de recebimento.
+        <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+          Contato
+        </div>
+        <h1 className="text-3xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+          Solicitar contato
+        </h1>
+        <p className="max-w-3xl text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+          Envie uma mensagem com um resumo do assunto e sua cidade. O retorno será realizado conforme disponibilidade.
         </p>
+        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
       </header>
 
-      <section className="rounded-3xl border border-zinc-200 bg-white p-8 space-y-5">
-        <h2 className="text-lg font-semibold">Formulário</h2>
-
-        {okMsg && (
-          <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-800">
-            {okMsg}
-          </div>
-        )}
-        {errMsg && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-            {errMsg}
-          </div>
-        )}
-
-        <form onSubmit={onSubmit} className="space-y-4">
-          {/* honeypot (deixe invisível) */}
-          <div className="hidden">
-            <label>
-              Website
-              <input name="website" />
-            </label>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-zinc-900">Nome</label>
+      <section
+        className="rounded-3xl border bg-white shadow-sm"
+        style={{ borderColor: "rgb(var(--border))" }}
+      >
+        <div className="p-8">
+          <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
+            <div className="md:col-span-1">
+              <label className="text-xs font-semibold" style={{ color: "rgb(var(--muted))" }}>
+                Nome
+              </label>
               <input
                 name="nome"
                 required
-                className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+                minLength={2}
+                className="mt-2 w-full rounded-2xl border bg-white px-4 py-3 text-sm outline-none"
+                style={{ borderColor: "rgb(var(--border))" }}
                 placeholder="Seu nome"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-zinc-900">E-mail</label>
+            <div className="md:col-span-1">
+              <label className="text-xs font-semibold" style={{ color: "rgb(var(--muted))" }}>
+                E-mail
+              </label>
               <input
                 name="email"
                 type="email"
                 required
-                className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+                className="mt-2 w-full rounded-2xl border bg-white px-4 py-3 text-sm outline-none"
+                style={{ borderColor: "rgb(var(--border))" }}
                 placeholder="seuemail@exemplo.com"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-zinc-900">Telefone (opcional)</label>
+            <div className="md:col-span-2">
+              <label className="text-xs font-semibold" style={{ color: "rgb(var(--muted))" }}>
+                Telefone (opcional)
+              </label>
               <input
                 name="telefone"
-                className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
-                placeholder="(DDD) 99999-9999"
+                className="mt-2 w-full rounded-2xl border bg-white px-4 py-3 text-sm outline-none"
+                style={{ borderColor: "rgb(var(--border))" }}
+                placeholder="(xx) xxxxx-xxxx"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-zinc-900">Cidade</label>
-              <input
-                name="cidade"
+            {/* Honeypot anti-spam: não mexer */}
+            <div className="hidden">
+              <label>Company</label>
+              <input name="company" tabIndex={-1} autoComplete="off" />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="text-xs font-semibold" style={{ color: "rgb(var(--muted))" }}>
+                Mensagem
+              </label>
+              <textarea
+                name="mensagem"
                 required
-                className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
-                placeholder="Niterói / São Gonçalo / Rio de Janeiro..."
+                minLength={10}
+                rows={6}
+                className="mt-2 w-full rounded-2xl border bg-white px-4 py-3 text-sm outline-none"
+                style={{ borderColor: "rgb(var(--border))" }}
+                placeholder="Descreva brevemente o assunto e a cidade."
               />
+              <p className="mt-3 text-xs leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+                Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada.
+                Não há promessa de resultado.
+              </p>
             </div>
-          </div>
 
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-zinc-900">Assunto</label>
-            <input
-              name="assunto"
-              required
-              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
-              placeholder="Ex.: Análise de contrato / cobrança / responsabilidade civil"
-            />
-          </div>
+            <div className="md:col-span-2 flex flex-wrap items-center gap-3">
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="rounded-2xl px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-60"
+                style={{ backgroundColor: "rgb(var(--accent))" }}
+              >
+                {status === "loading" ? "Enviando..." : "Enviar mensagem"}
+              </button>
 
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-zinc-900">Mensagem</label>
-            <textarea
-              name="mensagem"
-              required
-              rows={6}
-              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
-              placeholder="Descreva o caso de forma objetiva (prazos, documentos, contexto)."
-            />
-          </div>
+              {status === "success" ? (
+                <span className="text-sm font-semibold" style={{ color: "rgb(var(--accent))" }}>
+                  Mensagem enviada. Obrigado!
+                </span>
+              ) : null}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex rounded-2xl px-6 py-3 text-sm font-semibold text-white disabled:opacity-70"
-            style={{ backgroundColor: "rgb(var(--accent))" }}
-          >
-            {loading ? "Enviando..." : "Enviar mensagem"}
-          </button>
+              {status === "error" ? (
+                <span className="text-sm font-semibold text-red-600">
+                  {error}
+                </span>
+              ) : null}
+            </div>
+          </form>
+        </div>
 
-          <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-relaxed text-zinc-600">
-            Conteúdo de caráter informativo. Não substitui consulta jurídica, pois cada caso exige
-            análise individualizada. Não há promessa de resultado.
-          </div>
-        </form>
+        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
       </section>
-    </div>
+    </main>
   );
 }

@@ -1,104 +1,69 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { z } from "zod";
+import { Resend } from "resend";
 
-function isEmail(value: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
+export const runtime = "nodejs";
+
+const ContactSchema = z.object({
+  nome: z.string().min(2, "Nome inválido").max(100),
+  email: z.string().email("E-mail inválido").max(120),
+  telefone: z.string().max(40).optional().or(z.literal("")),
+  mensagem: z.string().min(10, "Mensagem muito curta").max(2000),
+  // honeypot anti-spam: precisa vir vazio
+  company: z.string().max(0).optional().or(z.literal("")),
+});
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const json = await req.json();
+    const data = ContactSchema.parse(json);
 
-    const nome = String(body?.nome ?? "").trim();
-    const email = String(body?.email ?? "").trim();
-    const telefone = String(body?.telefone ?? "").trim();
-    const cidade = String(body?.cidade ?? "").trim();
-    const assunto = String(body?.assunto ?? "").trim();
-    const mensagem = String(body?.mensagem ?? "").trim();
-
-    // Anti-spam: honeypot + tempo mínimo (ms)
-    const website = String(body?.website ?? "").trim(); // campo escondido
-    const startedAt = Number(body?.startedAt ?? 0);
-    const now = Date.now();
-    if (website.length > 0) {
+    // honeypot
+    if (data.company && data.company.length > 0) {
       return NextResponse.json({ ok: true }, { status: 200 });
     }
-    if (!startedAt || now - startedAt < 2500) {
-      return NextResponse.json({ ok: false, error: "Envio muito rápido. Tente novamente." }, { status: 429 });
-    }
 
-    // Validação
-    if (nome.length < 2) {
-      return NextResponse.json({ ok: false, error: "Informe seu nome." }, { status: 400 });
-    }
-    if (!isEmail(email)) {
-      return NextResponse.json({ ok: false, error: "Informe um e-mail válido." }, { status: 400 });
-    }
-    if (cidade.length < 2) {
-      return NextResponse.json({ ok: false, error: "Informe sua cidade." }, { status: 400 });
-    }
-    if (assunto.length < 3) {
-      return NextResponse.json({ ok: false, error: "Informe o assunto." }, { status: 400 });
-    }
-    if (mensagem.length < 10) {
-      return NextResponse.json({ ok: false, error: "Escreva uma mensagem com mais detalhes." }, { status: 400 });
-    }
+    const resendKey = process.env.RESEND_API_KEY;
+    const toEmail = process.env.CONTACT_TO_EMAIL;
 
-    const SMTP_HOST = process.env.SMTP_HOST;
-    const SMTP_PORT = Number(process.env.SMTP_PORT || "587");
-    const SMTP_USER = process.env.SMTP_USER;
-    const SMTP_PASS = process.env.SMTP_PASS;
-
-    const MAIL_TO = process.env.MAIL_TO; // e-mail da advogada
-    const MAIL_FROM = process.env.MAIL_FROM || SMTP_USER; // remetente
-
-    if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !MAIL_TO || !MAIL_FROM) {
+    if (!resendKey || !toEmail) {
       return NextResponse.json(
         { ok: false, error: "Configuração de e-mail ausente no servidor." },
         { status: 500 }
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: SMTP_PORT,
-      secure: SMTP_PORT === 465,
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
-      },
-    });
+    const resend = new Resend(resendKey);
 
-    const subject = `[Site] Contato: ${assunto} — ${nome} (${cidade})`;
-
+    const subject = `Contato pelo site — ${data.nome}`;
     const text = [
       "Novo contato recebido pelo site:",
       "",
-      `Nome: ${nome}`,
-      `E-mail: ${email}`,
-      `Telefone: ${telefone || "(não informado)"}`,
-      `Cidade: ${cidade}`,
-      `Assunto: ${assunto}`,
+      `Nome: ${data.nome}`,
+      `E-mail: ${data.email}`,
+      `Telefone: ${data.telefone || "-"}`,
       "",
       "Mensagem:",
-      mensagem,
+      data.mensagem,
       "",
-      "Observação: conteúdo informativo; sem promessa de resultado; cada caso exige análise individualizada.",
+      "—",
+      "Site institucional (conteúdo informativo).",
     ].join("\n");
 
-    await transporter.sendMail({
-      from: `Site — Nathalia Guaraciaba <${MAIL_FROM}>`,
-      to: MAIL_TO,
-      replyTo: email,
+    await resend.emails.send({
+      from: "Site Nathalia <onboarding@resend.dev>",
+      to: [toEmail],
+      replyTo: data.email,
       subject,
       text,
     });
 
     return NextResponse.json({ ok: true }, { status: 200 });
-  } catch (err) {
-    return NextResponse.json(
-      { ok: false, error: "Não foi possível enviar. Tente novamente em instantes." },
-      { status: 500 }
-    );
+  } catch (err: any) {
+    const msg =
+      err?.issues?.[0]?.message ||
+      err?.message ||
+      "Não foi possível enviar. Tente novamente.";
+    return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
