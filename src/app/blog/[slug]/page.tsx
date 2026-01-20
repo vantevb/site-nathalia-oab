@@ -70,7 +70,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
       </header>
 
       <article
-        className="prose prose-zinc max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline"
+        className="prose prose-zinc max-w-none prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-[rgb(var(--accent))] hover:prose-a:underline"
         dangerouslySetInnerHTML={{ __html: html }}
       />
 

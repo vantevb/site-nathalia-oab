@@ -4,64 +4,122 @@ import { getAllPostsMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Conteúdos",
-  description: "Artigos e conteúdos de caráter informativo sobre Direito Civil.",
+  description:
+    "Artigos informativos sobre temas de Direito Civil. Conteúdo de caráter informativo, sem promessa de resultado.",
 };
 
-export default function BlogPage() {
+function Tag({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="inline-flex items-center rounded-full border bg-white px-3 py-1 text-xs font-medium"
+      style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--muted))" }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function Card({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="rounded-3xl border bg-white shadow-sm transition hover:-translate-y-[2px] hover:shadow-md"
+      style={{ borderColor: "rgb(var(--border))" }}
+    >
+      <div className="p-7">{children}</div>
+    </div>
+  );
+}
+
+export default function BlogIndexPage() {
   const posts = getAllPostsMeta();
 
   return (
-    <div className="max-w-4xl space-y-10">
+    <main className="mx-auto w-full max-w-6xl px-4 py-12 space-y-10">
       <header className="space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight">Conteúdos</h1>
-        <p className="text-zinc-700 leading-relaxed">
-          Artigos com caráter informativo sobre temas do Direito Civil.
+        <div
+          className="text-xs font-semibold tracking-[0.22em] uppercase"
+          style={{ color: "rgb(var(--muted))" }}
+        >
+          Editorial
+        </div>
+
+        <h1 className="text-3xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+          Conteúdos informativos
+        </h1>
+
+        <p className="max-w-3xl text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+          Artigos objetivos sobre temas de Direito Civil. Conteúdo de caráter informativo, sem apelos comerciais.
         </p>
+
+        <div
+          className="h-[2px] w-full"
+          style={{ backgroundColor: "rgba(15,76,92,0.18)" }}
+        />
       </header>
 
-      <section className="grid gap-4">
-        {posts.map((p) => (
-          <article key={p.slug} className="rounded-3xl border border-zinc-200 bg-white p-7">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <time className="text-xs text-zinc-500">{p.date}</time>
-              <div className="flex flex-wrap gap-2">
-                {p.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-700"
+      {posts.length === 0 ? (
+        <div
+          className="rounded-3xl border bg-white p-8 text-sm"
+          style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--muted))" }}
+        >
+          Nenhum conteúdo publicado ainda.
+        </div>
+      ) : (
+        <section className="grid gap-4 md:grid-cols-2">
+          {posts.map((p) => (
+            <Card key={p.slug}>
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <time className="text-xs" style={{ color: "rgb(var(--muted))" }}>
+                    {p.date}
+                  </time>
+
+                  <div className="flex flex-wrap gap-2">
+                    {p.tags?.slice(0, 3).map((t) => (
+                      <Tag key={t}>{t}</Tag>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="text-lg font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
+                    <Link href={`/blog/${p.slug}`} className="no-underline hover:underline">
+                      {p.title}
+                    </Link>
+                  </h2>
+
+                  {p.excerpt ? (
+                    <p className="text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
+                      {p.excerpt}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className="text-sm font-semibold no-underline hover:underline"
+                    style={{ color: "rgb(var(--accent))" }}
                   >
-                    {t}
+                    Ler artigo →
+                  </Link>
+
+                  <span className="text-xs" style={{ color: "rgb(var(--muted))" }}>
+                    Informativo
                   </span>
-                ))}
+                </div>
               </div>
-            </div>
+            </Card>
+          ))}
+        </section>
+      )}
 
-            <h2 className="mt-3 text-lg font-semibold">
-              <Link href={`/blog/${p.slug}`} className="no-underline hover:underline">
-                {p.title}
-              </Link>
-            </h2>
-
-            {p.excerpt ? (
-              <p className="mt-2 text-sm text-zinc-700 leading-relaxed">{p.excerpt}</p>
-            ) : null}
-
-            <div className="mt-4">
-              <Link
-                href={`/blog/${p.slug}`}
-                className="text-sm font-semibold text-zinc-900 hover:underline"
-              >
-                Ler artigo →
-              </Link>
-            </div>
-          </article>
-        ))}
-      </section>
-
-      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-xs leading-relaxed text-zinc-600">
-        Conteúdo de caráter informativo. Não substitui consulta jurídica, pois cada caso exige
-        análise individualizada. Não há promessa de resultado.
-      </div>
-    </div>
+      <footer
+        className="rounded-3xl border bg-white p-6 text-xs leading-relaxed"
+        style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--muted))" }}
+      >
+        Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada. Não há promessa de resultado.
+      </footer>
+    </main>
   );
 }
