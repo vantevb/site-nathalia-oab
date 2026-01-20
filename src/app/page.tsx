@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Nathalia Guaraciaba — OAB/RJ nº 25.832",
   description:
-    "Atuação em Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo e atendimento com ética e responsabilidade.",
+    "Atuação em Direito Civil no Estado do Rio de Janeiro/RJ. Conteúdo informativo e atendimento com ética e responsabilidade.",
 };
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
@@ -33,7 +33,7 @@ export default function HomePage() {
       >
         <div className="p-10 md:p-12">
           <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
-            Direito Civil • Niterói • São Gonçalo • Rio de Janeiro/RJ
+            Direito Civil • Rio de Janeiro/RJ
           </div>
 
           <h1 className="mt-4 text-4xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>

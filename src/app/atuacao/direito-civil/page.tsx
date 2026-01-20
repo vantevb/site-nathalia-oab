@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Direito Civil",
   description:
-    "Direito Civil em Niterói, São Gonçalo e Rio de Janeiro/RJ. Conteúdo informativo e atendimento institucional.",
+    "Direito Civil no Estado do Rio de Janeiro/RJ. Conteúdo informativo e atendimento institucional.",
 };
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {

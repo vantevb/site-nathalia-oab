@@ -10,7 +10,8 @@ export default function Footer() {
               Nathalia dos Santos Guaraciaba
             </div>
             <div className="text-sm text-zinc-700">Advogada — OAB/RJ nº 25.832</div>
-            <div className="text-sm text-zinc-700">
+            <div className="text-sm text-zinc-700"><a className="hover:text-zinc-950" href="mailto:contato@nathaliaguaraciaba.adv.br">contato@nathaliaguaraciaba.adv.br</a></div>
+<div className="text-sm text-zinc-700">
               Niterói • São Gonçalo • Rio de Janeiro/RJ
             </div>
 

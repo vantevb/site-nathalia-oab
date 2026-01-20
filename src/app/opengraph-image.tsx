@@ -103,7 +103,7 @@ export default function OpenGraphImage() {
                 Advogada — OAB/RJ nº 25.832
               </div>
               <div style={{ fontSize: 22, color: muted }}>
-                Direito Civil • Niterói • São Gonçalo • Rio de Janeiro/RJ
+                Direito Civil • Rio de Janeiro/RJ
               </div>
             </div>
           </div>
