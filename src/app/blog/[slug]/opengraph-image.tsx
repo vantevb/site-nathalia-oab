@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og";
+import { getPostBySlug } from "@/lib/posts";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage({ params }: { params: { slug: string } }) {
   const bg = "rgb(250 250 249)";
   const panel = "rgba(255,255,255,0.95)";
   const border = "rgba(226,232,240,1)";
@@ -12,6 +13,17 @@ export default function OpenGraphImage() {
   const muted = "rgb(71 85 105)";
   const ink1 = "rgba(15,76,92,0.95)";
   const ink2 = "rgba(12,45,56,0.95)";
+
+  let meta;
+  try {
+    meta = getPostBySlug(params.slug).meta;
+  } catch {
+    meta = { title: "Conteúdo", date: "", tags: [], excerpt: "", slug: params.slug };
+  }
+
+  const title = String(meta.title || "Conteúdo").slice(0, 92);
+  const date = meta.date ? String(meta.date) : "";
+  const tags = Array.isArray(meta.tags) ? meta.tags.slice(0, 3) : [];
 
   return new ImageResponse(
     (
@@ -51,11 +63,11 @@ export default function OpenGraphImage() {
             }}
           />
 
-          <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 28, alignItems: "flex-start" }}>
             <div
               style={{
-                width: 120,
-                height: 120,
+                width: 116,
+                height: 116,
                 borderRadius: 28,
                 border: `1px solid ${border}`,
                 background: "white",
@@ -63,9 +75,11 @@ export default function OpenGraphImage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flex: "0 0 auto",
+                marginTop: 2,
               }}
             >
-              <svg width="90" height="90" viewBox="0 0 120 120">
+              <svg width="88" height="88" viewBox="0 0 120 120">
                 <defs>
                   <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
                     <stop offset="0%" stopColor={ink1} />
@@ -95,15 +109,58 @@ export default function OpenGraphImage() {
               </svg>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ fontSize: 52, fontWeight: 800, letterSpacing: -1, color: text }}>
-                Nathalia dos Santos Guaraciaba
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div style={{ fontSize: 18, color: muted }}>
+                Conteúdos • Direito Civil
               </div>
-              <div style={{ fontSize: 26, color: muted }}>
-                Advogada — OAB/RJ nº 25.832
+
+              <div
+                style={{
+                  fontSize: 54,
+                  fontWeight: 800,
+                  letterSpacing: -1,
+                  lineHeight: 1.08,
+                  color: text,
+                }}
+              >
+                {title}
               </div>
-              <div style={{ fontSize: 22, color: muted }}>
-                Direito Civil • Niterói • São Gonçalo • Rio de Janeiro/RJ
+
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                {date ? (
+                  <div
+                    style={{
+                      fontSize: 18,
+                      color: muted,
+                      border: `1px solid ${border}`,
+                      padding: "8px 12px",
+                      borderRadius: 999,
+                      background: "white",
+                    }}
+                  >
+                    {date}
+                  </div>
+                ) : null}
+
+                {tags.map((t) => (
+                  <div
+                    key={t}
+                    style={{
+                      fontSize: 18,
+                      color: muted,
+                      border: `1px solid ${border}`,
+                      padding: "8px 12px",
+                      borderRadius: 999,
+                      background: "white",
+                    }}
+                  >
+                    {t}
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ fontSize: 20, color: muted, marginTop: 6 }}>
+                Nathalia dos Santos Guaraciaba • OAB/RJ nº 25.832
               </div>
             </div>
           </div>
