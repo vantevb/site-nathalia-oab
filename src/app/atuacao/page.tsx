@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Atuação",
@@ -77,25 +78,11 @@ function Card({
 export default function AtuacaoIndexPage() {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12 space-y-10">
-      <header className="space-y-3">
-        <div
-          className="text-xs font-semibold tracking-[0.22em] uppercase"
-          style={{ color: "rgb(var(--muted))" }}
-        >
-          Atuação
-        </div>
-
-        <h1 className="text-3xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
-          Áreas de atuação
-        </h1>
-
-        <p className="max-w-3xl text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
-          Seleção de temas em Direito Civil. A atuação depende de análise do caso concreto, documentação e
-          estratégia compatível com a legislação aplicável.
-        </p>
-
-        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
-      </header>
+      <PageHeader
+        eyebrow="Atuação"
+        title="Áreas de atuação"
+        description="Seleção de temas em Direito Civil. A atuação depende de análise do caso concreto, documentação e estratégia compatível com a legislação aplicável."
+      />
 
       <section className="grid gap-4 md:grid-cols-2">
         <Card
@@ -109,11 +96,7 @@ export default function AtuacaoIndexPage() {
           ]}
         />
 
-        {/* “Em breve” (editorial) — sem prometer atuação se não for o caso */}
-        <section
-          className="rounded-3xl border bg-white shadow-sm"
-          style={{ borderColor: "rgb(var(--border))" }}
-        >
+        <section className="rounded-3xl border bg-white shadow-sm" style={{ borderColor: "rgb(var(--border))" }}>
           <div className="p-8 space-y-4">
             <div
               className="text-xs font-semibold tracking-[0.22em] uppercase"
@@ -130,7 +113,8 @@ export default function AtuacaoIndexPage() {
               Esta seção editorial pode ser expandida conforme os conteúdos forem organizados e publicados.
             </p>
 
-            <div className="rounded-2xl border bg-slate-50 p-4 text-xs leading-relaxed"
+            <div
+              className="rounded-2xl border bg-slate-50 p-4 text-xs leading-relaxed"
               style={{ borderColor: "rgb(var(--border))", color: "rgb(var(--muted))" }}
             >
               Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada.
