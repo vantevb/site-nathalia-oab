@@ -4,6 +4,10 @@ import { useState } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+function onlyDigits(v: string) {
+  return (v || "").replace(/\D/g, "");
+}
+
 export default function ContatoPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
@@ -13,48 +17,85 @@ export default function ContatoPage() {
     setStatus("loading");
     setError("");
 
-    const form = new FormData(e.currentTarget);
-    const payload = Object.fromEntries(form.entries());
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
+    const payload = Object.fromEntries(form.entries()) as Record<string, string>;
+
+    // Honeypot anti-spam: se preencher, finge sucesso e não faz nada
+    if (payload.company) {
+      setStatus("success");
+      formEl.reset();
+      return;
+    }
+
+    const rawNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+    const number = onlyDigits(rawNumber);
+
+    if (!number) {
+      setStatus("error");
+      setError("WhatsApp não configurado. Informe o número (NEXT_PUBLIC_WHATSAPP_NUMBER).");
+      return;
+    }
+
+    const nome = (payload.nome || "").trim();
+    const email = (payload.email || "").trim();
+    const telefone = (payload.telefone || "").trim();
+    const mensagem = (payload.mensagem || "").trim();
+
+    const text = [
+      "Olá, Dra. Nathalia.",
+      "",
+      "Gostaria de solicitar contato para informações iniciais.",
+      "",
+      `Nome: ${nome}`,
+      `E-mail: ${email}`,
+      telefone ? `Telefone: ${telefone}` : null,
+      "",
+      "Mensagem:",
+      mensagem,
+      "",
+      "—",
+      "Conteúdo de caráter informativo. Não substitui consulta jurídica. Não há promessa de resultado.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 
     try {
-      const res = await fetch("/api/contato", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        throw new Error(data?.error || "Não foi possível enviar.");
+      // tenta abrir em nova aba; se o browser bloquear, cai no fallback
+      const win = window.open(url, "_blank", "noopener,noreferrer");
+      if (!win) {
+        window.location.assign(url);
       }
 
       setStatus("success");
-      (e.target as HTMLFormElement).reset();
-    } catch (err: any) {
+      formEl.reset();
+    } catch {
       setStatus("error");
-      setError(err?.message || "Erro ao enviar.");
+      setError("Não foi possível abrir o WhatsApp. Tente novamente.");
     }
   }
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12 space-y-10">
       <header className="space-y-3">
-        <div className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: "rgb(var(--muted))" }}>
+        <div
+          className="text-xs font-semibold tracking-[0.22em] uppercase"
+          style={{ color: "rgb(var(--muted))" }}
+        >
           Contato
         </div>
         <h1 className="text-3xl font-semibold tracking-tight" style={{ color: "rgb(var(--text))" }}>
           Solicitar contato
         </h1>
         <p className="max-w-3xl text-sm leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
-          Envie uma mensagem com um resumo do assunto e sua cidade. O retorno será realizado conforme disponibilidade.
+          Envie uma mensagem com um resumo do assunto. O retorno será realizado conforme disponibilidade.
         </p>
-        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
+        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(199,164,74,0.22)" }} />
       </header>
 
-      <section
-        className="rounded-3xl border bg-white shadow-sm"
-        style={{ borderColor: "rgb(var(--border))" }}
-      >
+      <section className="rounded-3xl border bg-white shadow-sm" style={{ borderColor: "rgb(var(--border))" }}>
         <div className="p-8">
           <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
             <div className="md:col-span-1">
@@ -114,7 +155,7 @@ export default function ContatoPage() {
                 rows={6}
                 className="mt-2 w-full rounded-2xl border bg-white px-4 py-3 text-sm outline-none"
                 style={{ borderColor: "rgb(var(--border))" }}
-                placeholder="Descreva brevemente o assunto e a cidade."
+                placeholder="Descreva brevemente o assunto."
               />
               <p className="mt-3 text-xs leading-relaxed" style={{ color: "rgb(var(--muted))" }}>
                 Conteúdo de caráter informativo. Não substitui consulta jurídica. Cada caso exige análise individualizada.
@@ -129,25 +170,21 @@ export default function ContatoPage() {
                 className="rounded-2xl px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-60"
                 style={{ backgroundColor: "rgb(var(--accent))" }}
               >
-                {status === "loading" ? "Enviando..." : "Enviar mensagem"}
+                {status === "loading" ? "Abrindo WhatsApp..." : "Enviar pelo WhatsApp"}
               </button>
 
               {status === "success" ? (
                 <span className="text-sm font-semibold" style={{ color: "rgb(var(--accent))" }}>
-                  Mensagem enviada. Obrigado!
+                  Conversa aberta no WhatsApp.
                 </span>
               ) : null}
 
-              {status === "error" ? (
-                <span className="text-sm font-semibold text-red-600">
-                  {error}
-                </span>
-              ) : null}
+              {status === "error" ? <span className="text-sm font-semibold text-red-600">{error}</span> : null}
             </div>
           </form>
         </div>
 
-        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(15,76,92,0.18)" }} />
+        <div className="h-[2px] w-full" style={{ backgroundColor: "rgba(199,164,74,0.22)" }} />
       </section>
     </main>
   );
