@@ -2,10 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-export default function WhatsAppFloating() {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+function onlyDigits(v: string) {
+  return (v || "").replace(/\D/g, "");
+}
 
-  const hasWhatsApp = useMemo(() => /^\d{10,15}$/.test(number), [number]);
+export default function WhatsAppFloating() {
+  const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+  const number = useMemo(() => onlyDigits(raw), [raw]);
+
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -15,7 +19,8 @@ export default function WhatsAppFloating() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (!hasWhatsApp) return null;
+  // Se não tiver número, não mostra
+  if (!number) return null;
 
   const text = [
     "Olá, Dra. Nathalia.",
@@ -42,7 +47,6 @@ export default function WhatsAppFloating() {
         className={[
           "flex items-center gap-3 border bg-white shadow-sm transition-all duration-300 ease-out",
           "hover:-translate-y-[2px] hover:shadow-md",
-          // mobile: apenas ícone (quadradinho arredondado)
           "rounded-2xl p-3 sm:rounded-full sm:px-4 sm:py-3",
           scrolled ? "opacity-90" : "opacity-100",
         ].join(" ")}
@@ -53,7 +57,6 @@ export default function WhatsAppFloating() {
             : "0 14px 35px -25px rgba(2,6,23,0.35)",
         }}
       >
-        {/* Ícone */}
         <span
           className="grid place-items-center rounded-full"
           style={{
@@ -80,7 +83,6 @@ export default function WhatsAppFloating() {
           </svg>
         </span>
 
-        {/* Texto: escondido no mobile, aparece no desktop e expande no hover */}
         <div className="hidden sm:block overflow-hidden">
           <div className="leading-tight whitespace-nowrap">
             <div className="text-sm font-semibold" style={{ color: "rgb(var(--text))" }}>
@@ -92,7 +94,6 @@ export default function WhatsAppFloating() {
           </div>
         </div>
 
-        {/* seta: só no desktop */}
         <span
           className="hidden sm:inline-block text-sm font-semibold opacity-60 transition group-hover:opacity-100"
           style={{ color: "rgb(var(--accent))" }}

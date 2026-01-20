@@ -4,14 +4,14 @@
 
 /* Editorial premium: papel + carvão + acento discreto */
 :root {
-  --bg: 250 250 249;        /* stone-50 */
-  --surface: 255 255 255;   /* white */
-  --text: 17 24 39;         /* slate-900 */
-  --muted: 71 85 105;       /* slate-600 */
-  --border: 226 232 240;    /* slate-200 */
-
+  --accent: 127 146 163;        /* stone-50 */
+  --accent: 199 164 74;   /* white */
+  --text: 43 43 43;         /* slate-900 */
+  --muted: 120 120 120;       /* slate-600 */
+  --border: 220 2224 229;    /* slate-200 */
+  --bg:255 255 255
   --accent: 15 76 92;       /* petróleo discreto */
-  --accent-2: 12 45 56;     /* mais escuro */
+  --accent-2: 12 45 56;    /* mais escuro */
 }
 
 html, body { height: 100%; }
@@ -29,3 +29,18 @@ a {
 a:hover { text-decoration: underline; }
 
 ::selection { background: rgba(15,76,92,.14); }
+
+/* === Paleta Nathalia (azul acinzentado + dourado suave) === */
+:root {
+  --accent: 127 146 163;      /* azul acinzentado */
+  --accent-soft: 199 164 74;  /* dourado */
+  --text: 43 43 43;
+  --muted: 120 120 120;
+  --border: 220 224 229;
+  --bg: 255 255 255;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
